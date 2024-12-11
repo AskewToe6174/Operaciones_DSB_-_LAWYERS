@@ -5,8 +5,13 @@ const { spawn } = require('child_process');
 const path = require('path');  // Importar el módulo 'path'
 
 router.use(express.json());
-router.use(cors());
-
+const corsOptions = {
+    origin: ' http://52.14.73.15', // Solo permite solicitudes desde este dominio
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    credentials: true // Permite cookies si las usas
+  };
+  router.use(cors(corsOptions));
+  
 //================================================================================================
 /*
 Ejemplo de json que voy a recibir:

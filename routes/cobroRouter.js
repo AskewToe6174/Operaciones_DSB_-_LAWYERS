@@ -8,7 +8,12 @@ const Sequelize = require('sequelize');
 const facturas = require('../models/facturas');
 const historialmovimientos = require('../models/historialmovimientos');
 
-router.use(cors());
+const corsOptions = {
+  origin: 'http://52.14.73.15', // Solo permite solicitudes desde este dominio
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  credentials: true // Permite cookies si las usas
+};
+router.use(cors(corsOptions));
 
 // ------------------------------------- GET -----------------------------------------------
 router.get('/:id', async (req, res) => {
@@ -83,8 +88,8 @@ router.post('/nuevo', async (req, res) => {
 
     // Convertir `aplicacion`, `numeroTransferencia`, y `folioComplemento` a enteros
     aplicacion = parseInt(aplicacion, 10);
-    numeroTransferencia = parseInt(numeroTransferencia, 10);
-    folioComplemento = parseInt(folioComplemento, 10);
+    //numeroTransferencia = parseInt(numeroTransferencia, 10);
+    //folioComplemento = parseInt(folioComplemento, 10);
 
     // Asegurar que `monto` sea un Decimal
     monto = new Decimal(monto);

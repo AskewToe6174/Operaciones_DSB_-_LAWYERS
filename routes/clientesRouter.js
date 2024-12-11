@@ -8,7 +8,12 @@ const { spawn } = require('child_process');
 
 
 router.use(express.json());
-router.use(cors());
+const corsOptions = {
+  origin: 'http://52.14.73.15', // Solo permite solicitudes desde este dominio
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  credentials: true // Permite cookies si las usas
+};
+router.use(cors(corsOptions));
 
 //----------------------------------------------------------------------- GET --------------------
 //OBTENER TODOS LOS TIPOS DE CLIENTE

@@ -6,6 +6,12 @@ const { TipoFacturas } = require('../models')
 const {CobroAplicaciones}=require('../models');
 const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
+const corsOptions = {
+  origin: 'http://52.14.73.15', // Solo permite solicitudes desde este dominio
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  credentials: true // Permite cookies si las usas
+};
+router.use(cors(corsOptions));
 
 //facturacion
 //obtener facturas
@@ -186,17 +192,30 @@ router.post('/nueva', async (req, res) => {
     }
 
     // Consulta 1: Obtener los totales generales para la factura
-    const resultFactura = await sequelize.query(
-      `SELECT SUM(subtotal) AS subtotal, 
-              SUM(total) AS totalgeneral, 
-              deal
-       FROM operacionesdev.RegistroAplicaciones
-       WHERE id IN (:ids)
-       GROUP BY deal;`, {
-        replacements: { ids: aplicaciones },
-        type: sequelize.QueryTypes.SELECT
-      }
-    );
+   /*
+   
+   
+   
+   */ 
+  
+   let totalSubtotal = 0;
+   let totalGeneral = 0;
+   let montoIva = 0;
+   let deal = null;
+
+   
+   const resultFactura = await sequelize.query(
+    `SELECT SUM(subtotal) AS subtotal, 
+            SUM(total) AS totalgeneral
+     FROM \`dsb&lawyers_operaciones\`.RegistroAplicaciones
+     WHERE id IN (:ids);`, 
+     {
+       replacements: { ids: aplicaciones },
+       type: sequelize.QueryTypes.SELECT
+     }
+  );  
+
+    
 
     if (resultFactura.length === 0) {
       return res.status(404).json({
@@ -204,10 +223,6 @@ router.post('/nueva', async (req, res) => {
         details: 'No se encontraron registros de aplicaciones con los IDs proporcionados.'});
     }
 
-    let totalSubtotal = 0;
-    let totalGeneral = 0;
-    let montoIva = 0;
-    let deal = null;
 
     // Obtener los totales generales y deal para la factura
     resultFactura.forEach(row => {
@@ -233,7 +248,7 @@ router.post('/nueva', async (req, res) => {
     // Consulta 2: Obtener los detalles de cada aplicación, incluyendo idRegistro
     const resultAplicaciones = await sequelize.query(
       `SELECT id, subtotal, total, deal  -- Incluimos idRegistro
-       FROM operacionesdev.RegistroAplicaciones
+       FROM \`dsb&lawyers_operaciones\`.RegistroAplicaciones
        WHERE id IN (:ids);`, {
         replacements: { ids: aplicaciones },
         type: sequelize.QueryTypes.SELECT
@@ -279,10 +294,6 @@ router.post('/nueva', async (req, res) => {
     });
   }
 });
-
-
-
-
 /*
 {
   "TipoFactura": "valor1",

@@ -5,7 +5,12 @@ const Decimal = require('decimal.js');
 const { sequelize, Cliente, RegistroAplicaciones,ComentariosAplicacion,declaraciones } = require('../models');
 const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
-router.use(cors());
+const corsOptions = {
+  origin: ' http://52.14.73.15', // Solo permite solicitudes desde este dominio
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  credentials: true // Permite cookies si las usas
+};
+router.use(cors(corsOptions));
 
 
 // --------------------------------- GET ----------------------------------

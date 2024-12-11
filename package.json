@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -21,7 +22,6 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
     "decimal.js": "^10.4.3",
     "express": "^4.19.2",
     "mysql2": "^3.11.0",
